@@ -22,6 +22,8 @@ namespace drip3d.Shaders
 		public Dictionary<String, UniformInfo> Uniforms = new Dictionary<string, UniformInfo>();
 		public Dictionary<String, uint> Buffers = new Dictionary<string, uint>();
 
+		public string Name;
+
 		public ShaderProgram()
 		{
 			ProgramID = -1;
@@ -33,8 +35,9 @@ namespace drip3d.Shaders
 			ProgramID = GL.CreateProgram();
 		}
 
-		public ShaderProgram(string fragmentShader, string vertexShader, bool fromFile = true) : this()
+		public ShaderProgram(string name, string fragmentShader, string vertexShader, bool fromFile = true) : this()
 		{
+			Name = name;
 			if (fromFile)
 			{
 				LoadShaderFromFile(vertexShader + "Vertex", ShaderType.VertexShader);
@@ -50,10 +53,11 @@ namespace drip3d.Shaders
 			GenerateBuffers();
 		}
 
-		public ShaderProgram(string name) : this()
+		public ShaderProgram(string name, string filename) : this()
 		{
-			LoadShaderFromFile(name + "Vertex", ShaderType.VertexShader);
-			LoadShaderFromFile(name + "Fragment", ShaderType.FragmentShader);
+			Name = name;
+			LoadShaderFromFile(filename + "Vertex", ShaderType.VertexShader);
+			LoadShaderFromFile(filename + "Fragment", ShaderType.FragmentShader);
 
 			Link();
 			GenerateBuffers();

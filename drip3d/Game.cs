@@ -29,10 +29,6 @@ namespace drip3d
 		List<Volume> objects = new List<Volume>();
 		List<Light> lights = new List<Light>();
 
-		SortedList<string, ShaderProgram> shaders = new SortedList<string, ShaderProgram>();
-		string activeShader = "default";
-		string queuedShader = null;
-
 		public Game()
 			: base(512, 512, new GraphicsMode(32, 24, 0, 4))
 		{
@@ -47,14 +43,18 @@ namespace drip3d
 
 			GL.CullFace(CullFaceMode.FrontAndBack);
 
-			shaders.Add("default", new ShaderProgram("Unlit\\Color"));
-			shaders.Add("textured", new ShaderProgram("Unlit\\Texture"));
-			shaders.Add("normal", new ShaderProgram("Unlit\\Normal"));
-			shaders.Add("lambert", new ShaderProgram("Lit\\Lambert", "Lit\\Base"));
-			shaders.Add("phong", new ShaderProgram("Lit\\Phong", "Lit\\Base"));
-			shaders.Add("blinnphong", new ShaderProgram("Lit\\BlinnPhong", "Lit\\Base"));
-
-			activeShader = "lambert";
+			ShaderManager.Instance.Shaders.AddRange(
+				new List<ShaderProgram>()
+				{
+					new ShaderProgram("color", "Unlit\\Color"),
+					new ShaderProgram("texcoord", "Unlit\\TexCoord"),
+					new ShaderProgram("normal", "Unlit\\Normal"),
+					new ShaderProgram("textured", "Unlit\\Texture"),
+					new ShaderProgram("lambert", "Lit\\Lambert", "Lit\\Base"),
+					new ShaderProgram("phong", "Lit\\Phong", "Lit\\Base"),
+					new ShaderProgram("blinnphong", "Lit\\BlinnPhong", "Lit\\Base"),
+				});
+			ShaderManager.Instance.Init();
 
 			//LoadMaterials("opentk.mtl");
 
@@ -146,11 +146,7 @@ namespace drip3d
 
 		protected override void OnUpdateFrame(FrameEventArgs e)
 		{
-			if (queuedShader != activeShader && queuedShader != null)
-			{
-				Console.WriteLine("*** SWITCHING FROM {0} TO {1} ***", activeShader, queuedShader);
-				activeShader = queuedShader;
-			}
+			ShaderManager.Instance.SwitchShaders();
 			
 			base.OnUpdateFrame(e);
 			time += (float)e.Time;
@@ -165,7 +161,7 @@ namespace drip3d
 
 			camera.Update(ClientSize.Width, ClientSize.Height);
 
-			ObjectManager.Instance.Update(shaders[activeShader], camera, time);
+			ObjectManager.Instance.Update(ShaderManager.Instance.CurrentShader, camera, time);
 
 			Utils.CheckError();
 		}
@@ -178,13 +174,11 @@ namespace drip3d
 			GL.Clear(ClearBufferMask.ColorBufferBit | ClearBufferMask.DepthBufferBit);
 			GL.Enable(EnableCap.DepthTest);
 
-			string activeShaderThisFrame = activeShader;
+			ShaderManager.Instance.CurrentShader.EnableVertexAttribArrays();
 
-			shaders[activeShaderThisFrame].EnableVertexAttribArrays();
+			ObjectManager.Instance.Render(ShaderManager.Instance.CurrentShader, camera);
 
-			ObjectManager.Instance.Render(shaders[activeShaderThisFrame], camera);
-
-			shaders[activeShaderThisFrame].DisableVertexAttribArrays();
+			ShaderManager.Instance.CurrentShader.DisableVertexAttribArrays();
 
 			GL.Flush();
 			SwapBuffers();
@@ -225,19 +219,12 @@ namespace drip3d
 					ObjectManager.Instance.Lights[0].ChangePosition(camera.Position);
 					break;
 				case Key.L:
-					int index = shaders.IndexOfKey(activeShader) + 1;
-					if (index == shaders.Count)
-					{
-						index = 0;
-					}
-					QueueShader(shaders.ElementAt(index).Key);
+					ShaderManager.Instance.ChangeToNextShader();
+					break;
+				case Key.P:
+					ShaderManager.Instance.ChangeToPreviousShader();
 					break;
 			}
-		}
-
-		public void QueueShader(string newShader)
-		{
-			queuedShader = newShader;
 		}
 
 		void ResetCursor()

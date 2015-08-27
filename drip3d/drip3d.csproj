@@ -69,6 +69,7 @@
     <Compile Include="Objects\Lights\SpotLight.cs" />
     <Compile Include="Objects\Models\ExpandedCube.cs" />
     <Compile Include="Objects\Models\MaterialVolume.cs" />
+    <Compile Include="ShaderManager.cs" />
     <Compile Include="Shaders\ShaderVariableInfo.cs" />
     <Compile Include="Utils\Color.cs" />
     <Compile Include="Utils\Utils.cs" />
