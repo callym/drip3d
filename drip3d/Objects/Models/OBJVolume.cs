@@ -9,6 +9,7 @@ using System.IO;
 
 namespace drip3d.Objects.Models
 {
+	[Obsolete("OBJVolume is deprecated, use AssimpVolume instead.", true)]
 	class OBJVolume : MaterialVolume
 	{
 		Vector3[] vertices;

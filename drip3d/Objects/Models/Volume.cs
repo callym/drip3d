@@ -22,6 +22,7 @@ namespace drip3d.Objects.Models
 		public bool IsTextured = false;
 		public int TextureID;
 
+		protected bool generateNormals = true;
 		protected bool smooth = true;
 
 		public virtual int VerticesCount { get; set; }
@@ -38,7 +39,10 @@ namespace drip3d.Objects.Models
 
 		public override void Start()
 		{
-			CalculateNormals();
+			if (generateNormals)
+			{
+				CalculateNormals();
+			}
 
 			base.Start();
 		}

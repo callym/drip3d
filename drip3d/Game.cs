@@ -81,12 +81,12 @@ namespace drip3d
 			cc2.Scale = new Vector3(5f, 0.1f, 5f);
 			ObjectManager.Instance.Objects.Add(cc2);
 
-			OBJVolume teapot = OBJVolume.LoadFromFile("teapot.obj");
-			teapot.Start();
+			AssimpVolume teapot = AssimpVolume.LoadFromFile("teapot.obj");
 			teapot.Material.DiffuseColor = Utils.Colors.ToVector(Color.Turquoise);
 			teapot.Material.SpecularExponent = 30.0f;
 			teapot.Scale = new Vector3(0.3f);
 			teapot.Position += new Vector3(0f, -1f, 0f);
+			teapot.Start();
 			ObjectManager.Instance.Objects.Add(teapot);
 
 			/*PointLight pointLight = new PointLight();

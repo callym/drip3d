@@ -60,6 +60,7 @@ namespace drip3d.Objects.Models
 		public override void Start()
 		{
 			// don't calculate normals!
+			generateNormals = false;
 			base.Start();
 		}
 
