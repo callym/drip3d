@@ -150,28 +150,28 @@ namespace drip3d.Objects.Models
 			return new Vector2[]
 			{
 				// left
-				new Vector2(0.0f, 0.0f),
-				new Vector2(-1.0f, 1.0f),
-				new Vector2(-1.0f, 0.0f),
+				new Vector2(1.0f, 0.0f),
 				new Vector2(0.0f, 1.0f),
+				new Vector2(0.0f, 0.0f),
+				new Vector2(1.0f, 1.0f),
  
 				// back
-				new Vector2(0.0f, 0.0f),
+				new Vector2(1.0f, 0.0f),
+				new Vector2(1.0f, 1.0f),
 				new Vector2(0.0f, 1.0f),
-				new Vector2(-1.0f, 1.0f),
-				new Vector2(-1.0f, 0.0f),
+				new Vector2(0.0f, 0.0f),
  
 				// right
-				new Vector2(-1.0f, 0.0f),
 				new Vector2(0.0f, 0.0f),
+				new Vector2(1.0f, 0.0f),
+				new Vector2(1.0f, 1.0f),
 				new Vector2(0.0f, 1.0f),
-				new Vector2(-1.0f, 1.0f),
  
 				// top
 				new Vector2(0.0f, 0.0f),
 				new Vector2(0.0f, 1.0f),
-				new Vector2(-1.0f, 0.0f),
-				new Vector2(-1.0f, 1.0f),
+				new Vector2(1.0f, 0.0f),
+				new Vector2(1.0f, 1.0f),
  
 				// front
 				new Vector2(0.0f, 0.0f),
@@ -182,8 +182,8 @@ namespace drip3d.Objects.Models
 				// bottom
 				new Vector2(0.0f, 0.0f),
 				new Vector2(0.0f, 1.0f),
-				new Vector2(-1.0f, 1.0f),
-				new Vector2(-1.0f, 0.0f)
+				new Vector2(1.0f, 1.0f),
+				new Vector2(1.0f, 0.0f)
 			};
 		}
 	}
