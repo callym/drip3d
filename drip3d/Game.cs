@@ -41,8 +41,6 @@ namespace drip3d
 
 			ObjectManager.Instance.Init();
 
-			GL.CullFace(CullFaceMode.FrontAndBack);
-
 			ShaderManager.Instance.Shaders.AddRange(
 				new List<ShaderProgram>()
 				{
@@ -139,9 +137,9 @@ namespace drip3d
 			InitProgram();
 
 			Title = "Hello OpenTK!";
-			GL.ClearColor(Color.CornflowerBlue);
 
-			GL.PointSize(5f);
+			GL.CullFace(CullFaceMode.FrontAndBack);
+			GL.ClearColor(Color.CornflowerBlue);
 		}
 
 		protected override void OnUpdateFrame(FrameEventArgs e)
