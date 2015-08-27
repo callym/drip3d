@@ -61,7 +61,6 @@ namespace drip3d
 			cc1.Material.DiffuseColor = Utils.Colors.ToVector(Color.Teal);
 			cc1.Material.DiffuseTexture = new Texture("opentksquare.png", TextureType.DIFFUSE);
 			cc1.Material.SpecularExponent = 10.0f;
-			Console.WriteLine(cc1.Material.DiffuseTexture);
 			cc1.OnUpdate = (GameObject o, float t) =>
 				{
 					Volume v = (Volume)o;
@@ -73,7 +72,6 @@ namespace drip3d
 					v.Scale = new Vector3(0.5f, 0.5f, 0.5f);
 				};
 			cc1.Start();
-			Console.WriteLine(cc1.Material.DiffuseTexture);
 			ObjectManager.Instance.Objects.Add(cc1);
 
 			ExpandedCube cc2 = new ExpandedCube();

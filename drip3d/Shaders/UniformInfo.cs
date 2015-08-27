@@ -57,10 +57,6 @@ namespace drip3d.Shaders
 				GL.ActiveTexture(Value.Unit);
 				GL.BindTexture(TextureTarget.Texture2D, Value.ID);
 				GL.Uniform1(shader.GetUniform(s), Value.Unit - TextureUnit.Texture0);
-				Console.WriteLine("Shader using image {0}, value: {1}, texture unit: {2}",
-					Value.Name,
-					Value.ID,
-					Value.Unit - TextureUnit.Texture0);
 			}
 		}
 	}
