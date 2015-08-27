@@ -26,7 +26,7 @@ uniform sampler2D materialDiffuseTexture;
 
 out vec4 o_color;
  
-vec3 ApplyLight(Light light, vec3 normal, vec3 position, vec3 surfaceToCamera)
+vec4 ApplyLight(Light light, vec4 materialColor, vec3 normal, vec3 position, vec3 surfaceToCamera)
 {
 	vec3 surfaceToLight;
 	float attenuation = 1.0;
@@ -53,15 +53,15 @@ vec3 ApplyLight(Light light, vec3 normal, vec3 position, vec3 surfaceToCamera)
 		}
 	}
 
-	vec3 lightColorIntensity = light.Intensity * light.Color;
+	vec4 lightColorIntensity = vec4(light.Intensity * light.Color, 1.0);
 
 	// AMBIENT
-	vec3 ambient = light.Ambient;
+	vec4 ambient = vec4(light.Ambient, 1.0) * materialColor;
 
 	// DIFFUSE
 	// cos of angle of incidence
 	float diffuseCoefficient = max(0.0, dot(normal, surfaceToLight));
-	vec3 diffuse = diffuseCoefficient * lightColorIntensity;
+	vec4 diffuse = diffuseCoefficient * lightColorIntensity * materialColor;
 
 	// LINEAR
 	return ambient + (attenuation * diffuse);
@@ -75,18 +75,17 @@ void main()
 	// location of this fragment in world coordinates
 	vec3 position = vec3(model * vec4(f_vert, 1));
 
+	vec2 flipped_coord = vec2(f_textureCoord.x, 1.0 - f_textureCoord.y);
+	vec4 materialColor = vec4(materialDiffuse, 1.0) * texture(materialDiffuseTexture, flipped_coord);
+
 	vec3 surfaceToCamera = normalize(cameraPosition - position);
 
-	vec3 lightColor = vec3(0);
+	vec4 linearColor = vec4(0);
 
 	for (int i = 0; i < numberOfLights; ++i)
 	{
-		lightColor += ApplyLight(allLights[i], normal, position, surfaceToCamera);
+		linearColor += ApplyLight(allLights[i], materialColor, normal, position, surfaceToCamera);
 	}
-
-	vec2 flipped_coord = vec2(f_textureCoord.x, 1.0 - f_textureCoord.y);
-	vec4 linearColor = vec4(materialDiffuse * lightColor, 1.0);
-	linearColor = texture(materialDiffuseTexture, flipped_coord);
 
 	// GAMMA CORRECTION
 	//vec3 gamma = vec3(1.0/2.2);
