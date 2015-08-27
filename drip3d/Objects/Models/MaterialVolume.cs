@@ -5,7 +5,9 @@ using System.Text;
 using System.Threading.Tasks;
 
 using OpenTK;
+using OpenTK.Graphics.OpenGL;
 using drip3d.Materials;
+using drip3d.Textures;
 
 namespace drip3d.Objects.Models
 {
@@ -25,11 +27,7 @@ namespace drip3d.Objects.Models
 
 		public override void Start()
 		{
-			foreach (string filename in Material.Textures)
-			{
-				Game.LoadImage(filename);
-				Console.WriteLine("Loaded image {0}, value: {1}", filename, ObjectManager.Instance.Textures[filename]);
-			}
+			Material.Start();
 
 			base.Start();
 		}

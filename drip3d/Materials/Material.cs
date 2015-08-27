@@ -5,8 +5,10 @@ using System.Text;
 using System.Threading.Tasks;
 
 using OpenTK;
+using OpenTK.Graphics.OpenGL;
 using System.Drawing;
 using System.IO;
+using drip3d.Textures;
 
 namespace drip3d.Materials
 {
@@ -19,29 +21,24 @@ namespace drip3d.Materials
 		public float SpecularExponent = 1;
 		public float Opacity = 1.0f;
 
-		public string DiffuseTextureFile = "blank.png";
-		public string SpecularTextureFile = "blank.png";
-		public string OpacityTextureFile = "blank.png";
-		public string NormalTextureFile = "blank.png";
-		public List<string> Textures
-		{
-			get
-			{
-				return new List<string>()
-				{
-					DiffuseTextureFile,
-					SpecularTextureFile,
-					OpacityTextureFile,
-					NormalTextureFile
-				};
-			}
-		}
+		public Texture DiffuseTexture = new Texture("blank.png", TextureType.DIFFUSE);
+		public Texture SpecularTexture = new Texture("blank.png", TextureType.SPECULAR);
+		public Texture OpacityTexture = new Texture("blank.png", TextureType.OPACITY);
+		public Texture NormalTexture = new Texture("blank.png", TextureType.NORMAL);
 
 		public Material()
 		{
 			AmbientColor = Utils.Colors.ToVector(Color.Black);
 			DiffuseColor = Utils.Colors.ToVector(Color.DeepPink);
 			SpecularColor = Utils.Colors.ToVector(Color.White);
+		}
+
+		public void Start()
+		{
+			DiffuseTexture.Start();
+			SpecularTexture.Start();
+			OpacityTexture.Start();
+			NormalTexture.Start();
 		}
 
 		public static Dictionary<string, Material> LoadFromFile(string filename)
@@ -175,7 +172,7 @@ namespace drip3d.Materials
 					// Check that file name is present
 					if (l.Length > "map_Kd".Length + 6)
 					{
-						output.DiffuseTextureFile = l.Substring("map_Kd".Length + 1);
+						output.DiffuseTexture = new Texture(l.Substring("map_Kd".Length + 1), TextureType.DIFFUSE);
 					}
 				}
 
@@ -185,7 +182,7 @@ namespace drip3d.Materials
 					// Check that file name is present
 					if (l.Length > "map_Ks".Length + 6)
 					{
-						output.SpecularTextureFile = l.Substring("map_Ks".Length + 1);
+						output.SpecularTexture = new Texture(l.Substring("map_Ks".Length + 1), TextureType.SPECULAR);
 					}
 				}
 
@@ -195,7 +192,7 @@ namespace drip3d.Materials
 					// Check that file name is present
 					if (l.Length > "map_normal".Length + 6)
 					{
-						output.NormalTextureFile = l.Substring("map_normal".Length + 1);
+						output.NormalTexture = new Texture(l.Substring("map_normal".Length + 1), TextureType.NORMAL);
 					}
 				}
 
@@ -205,7 +202,7 @@ namespace drip3d.Materials
 					// Check that file name is present
 					if (l.Length > "map_opacity".Length + 6)
 					{
-						output.OpacityTextureFile = l.Substring("map_opacity".Length + 1);
+						output.OpacityTexture = new Texture(l.Substring("map_opacity".Length + 1), TextureType.OPACITY);
 					}
 				}
 			}

@@ -17,6 +17,7 @@ using drip3d.Objects.Models;
 using drip3d.Objects.Lights;
 using drip3d.Shaders;
 using drip3d.Materials;
+using drip3d.Textures;
 
 namespace drip3d
 {
@@ -58,9 +59,9 @@ namespace drip3d
 
 			ExpandedCube cc1 = new ExpandedCube();
 			cc1.Material.DiffuseColor = Utils.Colors.ToVector(Color.Teal);
-			cc1.Material.DiffuseTextureFile = "opentksquare.png";
+			cc1.Material.DiffuseTexture = new Texture("opentksquare.png", TextureType.DIFFUSE);
 			cc1.Material.SpecularExponent = 10.0f;
-			Console.WriteLine(cc1.Material.DiffuseTextureFile);
+			Console.WriteLine(cc1.Material.DiffuseTexture);
 			cc1.OnUpdate = (GameObject o, float t) =>
 				{
 					Volume v = (Volume)o;
@@ -72,7 +73,7 @@ namespace drip3d
 					v.Scale = new Vector3(0.5f, 0.5f, 0.5f);
 				};
 			cc1.Start();
-			Console.WriteLine(cc1.Material.DiffuseTextureFile);
+			Console.WriteLine(cc1.Material.DiffuseTexture);
 			ObjectManager.Instance.Objects.Add(cc1);
 
 			ExpandedCube cc2 = new ExpandedCube();
@@ -140,6 +141,8 @@ namespace drip3d
 
 			GL.CullFace(CullFaceMode.FrontAndBack);
 			GL.ClearColor(Color.CornflowerBlue);
+			GL.Enable(EnableCap.Texture2D);
+			GL.Color3(Color.Transparent);
 		}
 
 		protected override void OnUpdateFrame(FrameEventArgs e)
@@ -241,51 +244,6 @@ namespace drip3d
 			}
 		}
 
-		public static int LoadImage(Bitmap image)
-		{
-			int textureID = GL.GenTexture();
-
-			GL.BindTexture(TextureTarget.Texture2D, textureID);
-			BitmapData data = image.LockBits(
-				new System.Drawing.Rectangle(0, 0, image.Width, image.Height),
-				ImageLockMode.ReadOnly,
-				System.Drawing.Imaging.PixelFormat.Format32bppArgb);
-
-			GL.TexImage2D(TextureTarget.Texture2D, 0, PixelInternalFormat.SrgbAlpha,
-				data.Width, data.Height, 0, OpenTK.Graphics.OpenGL.PixelFormat.Bgra,
-				OpenTK.Graphics.OpenGL.PixelType.UnsignedByte, data.Scan0);
-
-			image.UnlockBits(data);
-
-			GL.TexParameter(TextureTarget.Texture2D, TextureParameterName.TextureMagFilter, (int)TextureMagFilter.Nearest);
-			GL.TexParameter(TextureTarget.Texture2D, TextureParameterName.TextureMinFilter, (int)TextureMinFilter.Nearest);
-
-			GL.GenerateMipmap(GenerateMipmapTarget.Texture2D);
-
-			return textureID;
-		}
-
-		public static int LoadImage(string filename)
-		{
-			if (ObjectManager.Instance.Textures.ContainsKey(filename))
-			{
-				return ObjectManager.Instance.Textures[filename];
-			}
-			string path = Path.Combine("Assets", "Images", filename);
-			try
-			{
-				Bitmap file = new Bitmap(path);
-				int result = LoadImage(file);
-				ObjectManager.Instance.Textures.Add(filename, result);
-				return result;
-			}
-			catch (FileNotFoundException e)
-			{
-				Console.WriteLine("!!! ERROR: image not found (" + filename + ") !!!");
-				return -1;
-			}
-		}
-
 		private static void LoadMaterials(string filename)
 		{
 			foreach (var m in Material.LoadFromFile(filename))
@@ -298,24 +256,24 @@ namespace drip3d
 
 			foreach (var m in ObjectManager.Instance.Materials.Values)
 			{
-				if (File.Exists(Path.Combine("Assets", "Images", m.DiffuseTextureFile)) && !ObjectManager.Instance.Textures.ContainsKey(m.DiffuseTextureFile))
+				if (File.Exists(Path.Combine("Assets", "Images", m.DiffuseTexture.Name)) && !ObjectManager.Instance.Textures.ContainsKey(m.DiffuseTexture.Name))
 				{
-					LoadImage(m.DiffuseTextureFile);
+					Texture.LoadImage(m.DiffuseTexture);
 				}
 
-				if (File.Exists(Path.Combine("Assets", "Images", m.SpecularTextureFile)) && !ObjectManager.Instance.Textures.ContainsKey(m.SpecularTextureFile))
+				if (File.Exists(Path.Combine("Assets", "Images", m.SpecularTexture.Name)) && !ObjectManager.Instance.Textures.ContainsKey(m.SpecularTexture.Name))
 				{
-					LoadImage(m.SpecularTextureFile);
+					Texture.LoadImage(m.SpecularTexture);
 				}
 
-				if (File.Exists(Path.Combine("Assets", "Images", m.NormalTextureFile)) && !ObjectManager.Instance.Textures.ContainsKey(m.NormalTextureFile))
+				if (File.Exists(Path.Combine("Assets", "Images", m.NormalTexture.Name)) && !ObjectManager.Instance.Textures.ContainsKey(m.NormalTexture.Name))
 				{
-					LoadImage(m.NormalTextureFile);
+					Texture.LoadImage(m.NormalTexture);
 				}
 
-				if (File.Exists(Path.Combine("Assets", "Images", m.OpacityTextureFile)) && !ObjectManager.Instance.Textures.ContainsKey(m.OpacityTextureFile))
+				if (File.Exists(Path.Combine("Assets", "Images", m.OpacityTexture.Name)) && !ObjectManager.Instance.Textures.ContainsKey(m.OpacityTexture.Name))
 				{
-					LoadImage(m.OpacityTextureFile);
+					Texture.LoadImage(m.OpacityTexture);
 				}
 			}
 		}

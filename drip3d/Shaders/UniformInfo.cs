@@ -7,6 +7,8 @@ using System.Threading.Tasks;
 using OpenTK;
 using OpenTK.Graphics.OpenGL;
 
+using drip3d.Textures;
+
 namespace drip3d.Shaders
 {
 	public class UniformInfo
@@ -40,17 +42,25 @@ namespace drip3d.Shaders
 		}
 	}
 
-	public class UniformTexture2D : UniformVariable
+	public abstract class UniformTexture : UniformVariable
 	{
-		public int Value;
+		public Texture Value;
+	}
 
+	public class UniformTexture2D : UniformTexture
+	{
 		public override void Update(ShaderProgram shader, int i = -1)
 		{
 			string s = String.Format(Name, i);
 			if (shader.GetUniform(s) != -1)
 			{
-				GL.BindTexture(TextureTarget.Texture2D, Value);
-				GL.Uniform1(shader.GetUniform(s), Value);
+				GL.ActiveTexture(Value.Unit);
+				GL.BindTexture(TextureTarget.Texture2D, Value.ID);
+				GL.Uniform1(shader.GetUniform(s), Value.Unit - TextureUnit.Texture0);
+				Console.WriteLine("Shader using image {0}, value: {1}, texture unit: {2}",
+					Value.Name,
+					Value.ID,
+					Value.Unit - TextureUnit.Texture0);
 			}
 		}
 	}

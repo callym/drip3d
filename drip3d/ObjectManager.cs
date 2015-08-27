@@ -11,6 +11,7 @@ using drip3d.Materials;
 using drip3d.Objects.Models;
 using drip3d.Objects.Lights;
 using drip3d.Shaders;
+using drip3d.Textures;
 
 namespace drip3d
 {
@@ -18,7 +19,7 @@ namespace drip3d
 	{
 		public List<Volume> Objects = new List<Volume>();
 		public List<Light> Lights = new List<Light>();
-		public Dictionary<string, int> Textures = new Dictionary<string, int>();
+		public Dictionary<string, Texture> Textures = new Dictionary<string, Texture>();
 		public Dictionary<string, Material> Materials = new Dictionary<string, Material>();
 
 		AttributeVector3 attributePositions = new AttributeVector3();
@@ -176,7 +177,7 @@ namespace drip3d
 					materialDiffuse.Value = m.DiffuseColor;
 					materialDiffuse.Update(shader);
 
-					materialDiffuseTexture.Value = Textures[m.DiffuseTextureFile];
+					materialDiffuseTexture.Value = m.DiffuseTexture;
 					materialDiffuseTexture.Update(shader);
 
 					materialSpecular.Value = m.SpecularColor;

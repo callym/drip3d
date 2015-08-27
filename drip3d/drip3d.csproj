@@ -71,6 +71,7 @@
     <Compile Include="Objects\Models\MaterialVolume.cs" />
     <Compile Include="ShaderManager.cs" />
     <Compile Include="Shaders\ShaderVariableInfo.cs" />
+    <Compile Include="Textures\Texture.cs" />
     <Compile Include="Utils\Color.cs" />
     <Compile Include="Utils\Utils.cs" />
     <None Include="Assets\Materials\opentk.mtl">
