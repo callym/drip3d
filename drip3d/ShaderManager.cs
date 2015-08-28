@@ -12,20 +12,18 @@ namespace drip3d
 	{
 		public List<ShaderProgram> Shaders = new List<ShaderProgram>();
 
-		int _currentShaderIndex = -1;
-		public int CurrentShaderIndex { get { return _currentShaderIndex; } }
-		public string CurrentShaderName { get { return Shaders[_currentShaderIndex].Name; } }
-		public ShaderProgram CurrentShader { get { return Shaders[_currentShaderIndex]; } }
+		public int CurrentShaderIndex { get; private set; } = -1;
+		public string CurrentShaderName { get { return Shaders[CurrentShaderIndex].Name; } }
+		public ShaderProgram CurrentShader { get { return Shaders[CurrentShaderIndex]; } }
 
-		int _nextShaderIndex = -1;
-		public int NextShaderIndex { get { return _nextShaderIndex; } }
+		public int NextShaderIndex { get; private set; } = -1;
 		public string NextShaderName
 		{
 			get
 			{
-				if (_nextShaderIndex != -1)
+				if (NextShaderIndex != -1)
 				{
-					return Shaders[_nextShaderIndex].Name;
+					return Shaders[NextShaderIndex].Name;
 				}
 				return null;
 			}
@@ -34,9 +32,9 @@ namespace drip3d
 		{
 			get
 			{
-				if (_nextShaderIndex != -1)
+				if (NextShaderIndex != -1)
 				{
-					return Shaders[_nextShaderIndex];
+					return Shaders[NextShaderIndex];
 				}
 				return null;
 			}
@@ -46,7 +44,7 @@ namespace drip3d
 
 		public void Init()
 		{
-			_currentShaderIndex = 0;
+			CurrentShaderIndex = 0;
 		}
 
 		public int GetShaderIndex(string name)
@@ -78,20 +76,20 @@ namespace drip3d
 			int i = GetShaderIndex(name);
 			if (i != -1)
 			{
-				_nextShaderIndex = i;
+				NextShaderIndex = i;
 			}
 		}
 		public void SetShader(int index)
 		{
 			if (index < Shaders.Count && index >= 0)
 			{
-				_nextShaderIndex = index;
+				NextShaderIndex = index;
 			}
 		}
 
 		public void ChangeToNextShader()
 		{
-			int i = _currentShaderIndex + 1;
+			int i = CurrentShaderIndex + 1;
 			if (i >= Shaders.Count)
 			{
 				i = 0;
@@ -101,7 +99,7 @@ namespace drip3d
 
 		public void ChangeToPreviousShader()
 		{
-			int i = _currentShaderIndex - 1;
+			int i = CurrentShaderIndex - 1;
 			if (i < 0)
 			{
 				i = Shaders.Count - 1;
@@ -111,11 +109,11 @@ namespace drip3d
 
 		public void SwitchShaders()
 		{
-			if (_nextShaderIndex != -1)
+			if (NextShaderIndex != -1)
 			{
-				Console.WriteLine($"*** SWITCHING FROM {Shaders[_currentShaderIndex].Name} TO {Shaders[_nextShaderIndex].Name} ***");
-				_currentShaderIndex = _nextShaderIndex;
-				_nextShaderIndex = -1;
+				Console.WriteLine($"*** SWITCHING FROM {Shaders[CurrentShaderIndex].Name} TO {Shaders[NextShaderIndex].Name} ***");
+				CurrentShaderIndex = NextShaderIndex;
+				NextShaderIndex = -1;
 			}
 		}
 

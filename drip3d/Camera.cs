@@ -17,26 +17,11 @@ namespace drip3d
 			set { position = value; }
 		}
 
-		private Vector3 orientation = new Vector3((float)Math.PI, 0f, 0f);
-		public Vector3 Orientation
-		{
-			get { return orientation; }
-			set { orientation = value; }
-		}
-		
-		private float moveSpeed = 0.2f;
-		public float MoveSpeed
-		{
-			get { return moveSpeed; }
-			set { moveSpeed = value; }
-		}
+		public Vector3 Orientation { get; set; } = new Vector3((float)Math.PI, 0f, 0f);
 
-		private float mouseSensitivity = 0.01f;
-		public float MouseSensitivity
-		{
-			get { return mouseSensitivity; }
-			set { mouseSensitivity = value; }
-		}
+		public float MoveSpeed { get; set; } = 0.2f;
+
+		public float MouseSensitivity { get; set; } = 0.01f;
 
 		public float FieldOfViewY = 1.3f;
 		public float zNear = 0.1f;

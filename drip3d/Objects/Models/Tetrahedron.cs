@@ -25,10 +25,7 @@ namespace drip3d.Objects.Models
 			ColorDataCount = 4;
 		}
 
-		public override Vector3[] GetVertices()
-		{
-			return new Vector3[] { PointApex, PointA, PointB, PointC };
-		}
+		public override Vector3[] GetVertices() => new Vector3[] { PointApex, PointA, PointB, PointC };
 
 		public override int[] GetIndices(int offset = 0)
 		{

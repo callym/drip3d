@@ -30,7 +30,7 @@ namespace drip3d.Objects.Models
 		public virtual int ColorDataCount { get; set; }
 		public virtual int TextureCoordsCount { get; set; }
 		protected Vector3[] normals = new Vector3[0];
-		public virtual int NormalCount { get { return normals.Length; } }
+		public virtual int NormalCount => normals.Length;
 
 		public Volume() : base()
 		{
@@ -50,14 +50,8 @@ namespace drip3d.Objects.Models
 		public abstract Vector3[] GetVertices();
 		public abstract int[] GetIndices(int offset = 0);
 		public abstract Vector3[] GetColorData();
-		public virtual Vector2[] GetTextureCoords()
-		{
-			return new Vector2[] { };
-		}
-		public virtual Vector3[] GetNormals()
-		{
-			return normals;
-		}
+		public virtual Vector2[] GetTextureCoords() => new Vector2[] { };
+		public virtual Vector3[] GetNormals() => normals;
 
 		public virtual void CalculateModelMatrix()
 		{

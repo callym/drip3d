@@ -40,15 +40,9 @@ namespace drip3d.Objects.Models
 			}
 		}
 
-		public override Vector3[] GetVertices()
-		{
-			return vertices.ToArray();
-		}
+		public override Vector3[] GetVertices() => vertices.ToArray();
 
-		public override Vector3[] GetColorData()
-		{
-			return colors.ToArray();
-		}
+		public override Vector3[] GetColorData() => colors.ToArray();
 
 		public override int[] GetIndices(int offset = 0)
 		{

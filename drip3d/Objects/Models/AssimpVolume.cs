@@ -28,14 +28,11 @@ namespace drip3d.Objects.Models
 			base.Start();
 		}
 
-		public override int VerticesCount { get { return vertices.Length; } }
-		public override int IndiceCount { get { return indices.Length; } }
-		public override int ColorDataCount { get { return colors.Length; } }
+		public override int VerticesCount => vertices.Length;
+		public override int IndiceCount => indices.Length;
+		public override int ColorDataCount => colors.Length;
 
-		public override Vector3[] GetVertices()
-		{
-			return vertices;
-		}
+		public override Vector3[] GetVertices() => vertices;
 
 		public override int[] GetIndices(int offset = 0)
 		{

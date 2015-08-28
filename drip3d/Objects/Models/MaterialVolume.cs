@@ -19,11 +19,7 @@ namespace drip3d.Objects.Models
 	abstract class MaterialVolume : Volume, IHasMaterial
 	{
 		Material _material = new Material();
-		public virtual Material Material
-		{
-			get { return _material; }
-			set { _material = value; }
-		}
+		public virtual Material Material { get; set; } = new Material();
 
 		public override void Start()
 		{
