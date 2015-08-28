@@ -89,7 +89,7 @@ namespace drip3d.Objects.Models
 			(
 				delegate(string message, string userData)
 				{
-					Console.WriteLine(message);
+					Console.Write(message);
 				}
 			);
 			logStream.Attach();
