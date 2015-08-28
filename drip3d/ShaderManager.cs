@@ -113,7 +113,7 @@ namespace drip3d
 		{
 			if (_nextShaderIndex != -1)
 			{
-				Console.WriteLine("*** SWITCHING FROM {0} TO {1} ***", Shaders[_currentShaderIndex].Name, Shaders[_nextShaderIndex].Name);
+				Console.WriteLine($"*** SWITCHING FROM {Shaders[_currentShaderIndex].Name} TO {Shaders[_nextShaderIndex].Name} ***");
 				_currentShaderIndex = _nextShaderIndex;
 				_nextShaderIndex = -1;
 			}

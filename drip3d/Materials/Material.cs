@@ -92,11 +92,11 @@ namespace drip3d.Materials
 			}
 			catch (FileNotFoundException e)
 			{
-				Console.WriteLine("!!! ERROR: mtl file not found ({0}) !!!", filename);
+				Console.WriteLine($"!!! ERROR: mtl file not found ({filename}) !!!");
 			}
 			catch (Exception e)
 			{
-				Console.WriteLine("!!! ERROR: cannot load mtl ({0}) !!!", filename);
+				Console.WriteLine($"!!! ERROR: cannot load mtl ({filename}) !!!");
 			}
 
 			return materials;
@@ -155,13 +155,11 @@ namespace drip3d.Materials
 					{
 						if (filename != null)
 						{
-							Console.WriteLine("!!! ERROR: cannot parse specular exponent (line: {0}, file: {1}) !!!",
-											l, filename);
+							Console.WriteLine($"!!! ERROR: cannot parse specular exponent (line: {l}, file: {filename}) !!!");
 						}
 						else
 						{
-							Console.WriteLine("!!! ERROR: cannot parse specular exponent (line: {0}, from string) !!!",
-											l);
+							Console.WriteLine($"!!! ERROR: cannot parse specular exponent (line: {l}, from string) !!!");
 						}
 					}
 				}
@@ -235,12 +233,10 @@ namespace drip3d.Materials
 
 		static void InvalidColorData(string line, string filename = null)
 		{
-			string error = String.Format("!!! ERROR: invalid color data (line: {0}, from string) !!!",
-									line);
+			string error = $"!!! ERROR: invalid color data (line: {line}, from string) !!!";
 			if (filename != null)
 			{
-				error = String.Format("!!! ERROR: invalid color data (line: {0}, file: {1}) !!!",
-									line, filename);
+				error = $"!!! ERROR: invalid color data (line: {line}, file: {filename}) !!!";
 			}
 			Console.WriteLine(error);
 			throw new ArgumentException(error);

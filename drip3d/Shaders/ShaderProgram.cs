@@ -84,7 +84,7 @@ namespace drip3d.Shaders
 				}
 				else
 				{
-					Console.WriteLine("!!! ERROR: shader threw following errors ({0}.glsl) !!!", filename);
+					Console.WriteLine($"!!! ERROR: shader threw following errors ({filename}.glsl) !!!");
 				}
 				Console.WriteLine(log);
 			}
@@ -121,7 +121,7 @@ namespace drip3d.Shaders
 					FragmentShaderID = id;
 				}
 			}
-			Console.WriteLine("*** loaded shader from file (" + filename + ".glsl) ***");
+			Console.WriteLine($"*** loaded shader from file ({filename}.glsl) ***");
 		}
 
 		public void Link()
