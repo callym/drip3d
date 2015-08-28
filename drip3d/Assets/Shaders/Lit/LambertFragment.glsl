@@ -1,7 +1,7 @@
 ﻿#version 330
 precision mediump float;
 
-in vec3 f_vert;
+in vec3 f_position;
 in vec3 f_normal;
 in vec2 f_textureCoord;
 
@@ -47,9 +47,16 @@ vec4 ApplyLight(Light light, vec4 materialColor, vec3 normal, vec3 position, vec
 		attenuation = 1.0 / (1.0 + (light.Attenuation * pow(distanceToLight, 2.0)));
 
 		float lightToSurfaceAngle = degrees(acos(dot(-surfaceToLight, normalize(light.ConeDirection))));
-		if (lightToSurfaceAngle > light.ConeAngle)
+		if (light.ConeAngle < 180.0)
 		{
-			attenuation = 0.0;
+			if (lightToSurfaceAngle < light.ConeAngle)
+			{
+				attenuation = (1.0 - (1.0 - lightToSurfaceAngle) * 1.0/(1.0 - light.ConeAngle));
+			}
+			else
+			{
+				attenuation = 0.0;
+			}
 		}
 	}
 
@@ -69,22 +76,16 @@ vec4 ApplyLight(Light light, vec4 materialColor, vec3 normal, vec3 position, vec
 
 void main()
 {
-	// normal in world coordinates
-	vec3 normal = normalize(transpose(inverse(mat3(model))) * f_normal);
-
-	// location of this fragment in world coordinates
-	vec3 position = vec3(model * vec4(f_vert, 1));
-
 	vec2 flipped_coord = vec2(f_textureCoord.x, 1.0 - f_textureCoord.y);
 	vec4 materialColor = vec4(materialDiffuse, 1.0) * texture(materialDiffuseTexture, flipped_coord);
 
-	vec3 surfaceToCamera = normalize(cameraPosition - position);
+	vec3 surfaceToCamera = normalize(cameraPosition - f_position);
 
 	vec4 linearColor = vec4(0);
 
 	for (int i = 0; i < numberOfLights; ++i)
 	{
-		linearColor += ApplyLight(allLights[i], materialColor, normal, position, surfaceToCamera);
+		linearColor += ApplyLight(allLights[i], materialColor, f_normal, f_position, surfaceToCamera);
 	}
 
 	// GAMMA CORRECTION

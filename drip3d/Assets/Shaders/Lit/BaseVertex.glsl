@@ -16,7 +16,7 @@ main()
 {
 	gl_Position = camera * model * vec4(position, 1.0);
 
-	f_position = position;
-	f_normal = normal;
+	f_position = (model * vec4(position, 1.0)).xyz;
+	f_normal = normalize(transpose(inverse(mat3(model))) * normal);
 	f_textureCoord = textureCoord;
 }
